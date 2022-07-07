@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -9,7 +10,7 @@ public class GenerateLevelView : MonoBehaviour
     [SerializeField]
     private Tile _tileGround;
 
-    [SerializeField]
+   [SerializeField]
     private int _widthMap;
 
     [SerializeField]
@@ -21,10 +22,15 @@ public class GenerateLevelView : MonoBehaviour
     [SerializeField] [Range(0,100)]
     private int _randomFillPresent;
 
+    [SerializeField]
+    private List<Tile> _tileTypes;
+
     public Tilemap TileMapGround  => _tileMapGround; 
     public Tile TileGround  => _tileGround; 
     public int WidthMap  => _widthMap; 
     public int HeightMap => _heightMap;
     public int FactorSmooth  => _factorSmooth; 
-    public int RandomFillPresent  => _randomFillPresent; 
+    public int RandomFillPresent  => _randomFillPresent;
+
+    public List<Tile> TileTypes  => _tileTypes; 
 }

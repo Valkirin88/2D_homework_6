@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -19,6 +20,11 @@ public class GenerateLevelController
 
     private int[,] _map;
 
+    private List<Tile> _tyleTypes;
+
+    private int _numberTileTypes;
+
+
     public GenerateLevelController(GenerateLevelView view)
     {
         _tileMapGround = view.TileMapGround;
@@ -27,25 +33,36 @@ public class GenerateLevelController
         _heightMap = view.HeightMap;
         _factorSmooth = view.FactorSmooth;
         _randomFillPresent = view.RandomFillPresent;
+        _tyleTypes = view.TileTypes;
+        _numberTileTypes = _tyleTypes.Count;
 
         _map = new int[_widthMap, _heightMap];
     }
 
     public void Awake()
     {
-        GenerateLevel();
+       GenerateLevel();
+    }
+
+    public void ClearTileMap()
+    {
+        if( _tileMapGround != null )
+            _tileMapGround.ClearAllTiles();
     }
 
     private void GenerateLevel()
     {
-        RandomFillLevel();
-
-        for (var i = 0; i < _factorSmooth; i++)
+        for (int j = 0; j < _numberTileTypes; j++)
         {
-            SmoothMap();
-        }
+            RandomFillLevel();
 
-        DrawTilesOnMap();
+            for (var i = 0; i < _factorSmooth; i++)
+            {
+                SmoothMap();
+            }
+
+            DrawTilesOnMap(j);
+        }
     }
 
 
@@ -106,7 +123,7 @@ public class GenerateLevelController
          
 
 
-    private void DrawTilesOnMap()
+    private void DrawTilesOnMap(int tile)
     {
         if (_map == null)
             return;
@@ -119,14 +136,10 @@ public class GenerateLevelController
                 if (_map[x, y] == 1)
                 {
                     var positionTile = new Vector3Int(-_widthMap / 2 + x, -_heightMap / 2 + y, 0);
-                    _tileMapGround.SetTile(positionTile, _tileGround);
+                    _tileMapGround.SetTile(positionTile, _tyleTypes[tile]);
                 }
             }
         }
     }
-
-
-
-
 
 }
